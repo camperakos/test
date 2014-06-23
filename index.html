@@ -12,7 +12,9 @@
     window.onload = function() {
 
       var game = new Phaser.Game(800, 600, Phaser.CANVAS, "", { preload: preload, create: create });
-
+      var counter=0;
+      var text;
+      var temp=0;
 function preload() {
 
     //  You can fill the preloader with as many assets as your game requires
@@ -29,7 +31,28 @@ function create() {
 
     //  This creates a simple sprite that is using our loaded image and
     //  displays it on-screen
-    game.add.sprite(0, 0, 'einstein');
+    var image = game.add.sprite(game.world.centerX, game.world.centerY, 'einstein');
+    image.anchor.set(0.5);
+    image.inputEnabled=true;
+    text=game.add.text(205,16,'',{fill: '#ffffff'});
+    image.events.onInputDown.add(listener,this);
+
+    game.physics.enable(image,Phaser.Physics.ARCADE);
+    image.body.velocity.x=temp;
+
+
+}
+function listener(){
+    counter++;
+    text.text="you clicked "+counter+" times!";
+
+    if(temp!=0){
+        temp=0;
+        }else{
+            temp=100;
+        }
+        console.log(temp);
+    
 
 }
     };
