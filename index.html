@@ -8,11 +8,8 @@
     <body>
 
     <script type="text/javascript">
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-    window.onload = function() {
-
-      var game = new Phaser.Game(800, 600, Phaser.CANVAS, "", { preload: preload, create: create });
-      
 function preload() {
 
     //  You can fill the preloader with as many assets as your game requires
@@ -21,24 +18,82 @@ function preload() {
     //  string by which we'll identify the image later in our code.
 
     //  The second parameter is the URL of the image (relative)
-    game.load.image('einstein', 'anime.jpg');
+    game.load.image('phaser', 'assets/sprites/phaser.png');
 
 }
 
+var sprite;
+
 function create() {
 
-    //  This creates a simple sprite that is using our loaded image and
-    //  displays it on-screen
-    var image = game.add.sprite(game.world.centerX, game.world.centerY, 'einstein');
-    image.anchor.set(0.5);
-    image.inputEnabled=true;
-    text=game.add.text(205,16,'',{fill: '#ffffff'});
-    image.events.onInputDown.add(listener,this);
+    //  To make the sprite move we need to enable Arcade Physics
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    game.physics.enable(image,Phaser.Physics.ARCADE);
-    image.body.velocity.x=temp;
-    console.
+    sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'phaser');
+    sprite.anchor.set(0.5);
 
+    //  And enable the Sprite to have a physics body:
+    game.physics.arcade.enable(sprite);
+
+}
+
+function update () {
+
+    //  If the sprite is > 8px away from the pointer then let's move to it
+    if (game.physics.arcade.distanceToPointer(sprite, game.input.activePointer) > 10)
+    {
+        //  Make the object seek to the active pointer (mouse or touch).
+        game.physics.arcade.moveToPointer(sprite, 700);
+    }
+    else
+    {
+        //  Otherwise turn off velocity because we're close enough to the pointer
+        sprite.body.velocity.set(0);
+    }
+
+}
+
+function render () {
+
+    game.debug.inputInfo(32, 32);
+
+}
+    /*
+
+    window.onload = function() {
+
+      var game = new Phaser.Game(800, 600, Phaser.CANVAS, "", { preload: preload, create: create });
+     
+function preload() {
+
+    //  You can fill the preloader with as many assets as your game requires
+
+    //  Here we are loading an image. The first parameter is the unique
+    //  string by which we'll identify the image later in our code.
+
+    //  The second parameter is the URL of the image (relative)
+    game.load.image('test', 'anime.jpg');
+
+}
+ var sprite;
+function create() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    sprite=game.add.sprite(game.world.centerX,game.world.centerY,'test');
+    sprite.anchor.set(0.5);
+    game.physics.arcade.enable(sprite);
+
+
+}
+function update(){
+    if(game.physics.arcade.distanceToPointer(sprite, game.inpute.activePointer)>8){
+        game.physics.arcade.moveToPointer(sprite,300);
+    }
+    else{
+        sprite.body.velocity.set(0);
+    }
+}
+function render(){
+    game.debug.inputInfo(32,32);
 }
 function listener(){
     counter++;
@@ -52,7 +107,7 @@ function listener(){
     
 
 }
-    };
+    };*/
 
     </script>
 
